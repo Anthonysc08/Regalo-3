@@ -24,7 +24,7 @@ jobs:
 
       - name: Compilar .exe (Windows)
         # Usamos ";" para separar rutas en Windows
-        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json;resources" "05 copy 2.py"
+        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json;resources" "05_01_02.py"
 
       - name: Subir .exe
         uses: actions/upload-artifact@v4
@@ -50,7 +50,7 @@ jobs:
 
       - name: Compilar .app (macOS)
         # Usamos ":" para separar rutas en macOS
-        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "05 copy 2.py"
+        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "05_01_02.py"
 
       - name: Subir ejecutable Mac
         uses: actions/upload-artifact@v4
