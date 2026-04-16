@@ -1,0 +1,52 @@
+name: Compilar ejecutables
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Compilar .exe
+        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json;resources" "05 copy 2.py"
+
+      - name: Subir .exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: FelizCumpleanos-Windows
+          path: dist/FelizCumpleanos.exe
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Compilar para Mac
+        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "05 copy 2.py"
+
+      - name: Subir ejecutable Mac
+        uses: actions/upload-artifact@v4
+        with:
+          name: FelizCumpleanos-Mac
+          path: dist/FelizCumpleanos
