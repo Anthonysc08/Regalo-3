@@ -11,25 +11,23 @@ import os, sys
 def resource_path(rel):
     if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, rel)
-        return os.path.join(os.path.dirname(_file_), rel)
-# ── Fuegos artificiales ───────────────────────────────────────
-COLOR_FONDO_FUEGOS = (8, 8, 18)          # ← fondo de los fuegos artificiales
+    return os.path.join(os.path.dirname(__file__), rel)  # FIX 1: _file_ → __file__
 
-COLORES_LETRAS = [                        # ← colores de letras y chispas
-    (255, 80,  80),   # rojo
-    (80,  255, 80),   # verde
-    (80,  160, 255),  # azul
+# ── Fuegos artificiales ───────────────────────────────────────
+COLOR_FONDO_FUEGOS = (8, 8, 18)
+COLORES_LETRAS = [
+    (255, 80, 80),    # rojo
+    (80, 255, 80),    # verde
+    (80, 160, 255),   # azul
     (255, 255, 80),   # amarillo
     (255, 150, 80),   # naranja
-    (210, 80,  255),  # violeta
-    (80,  255, 210),  # turquesa
+    (210, 80, 255),   # violeta
+    (80, 255, 210),   # turquesa
 ]
 
 # ── Animación del girasol ────────────────────────────────────
-COLOR_FONDO_GIRASOL = "#1a0030"          # ← fondo del girasol
-                                         
-
-COLORES_TEXTO_ARCOIRIS = [               # ← letras de "Feliz Cumpleaños"
+COLOR_FONDO_GIRASOL = "#1a0030"
+COLORES_TEXTO_ARCOIRIS = [
     "#ff4d4d",  # rojo
     "#ff9900",  # naranja
     "#ffff00",  # amarillo
@@ -38,13 +36,11 @@ COLORES_TEXTO_ARCOIRIS = [               # ← letras de "Feliz Cumpleaños"
     "#cc66ff",  # violeta
     "#ff66cc",  # rosa
 ]
-
-COLOR_SUBTITULO = "white"               # ← color del subtítulo
-COLOR_ESTRELLAS = "gold"                # ← color de las estrellas decorativas
-
+COLOR_SUBTITULO = "white"
+COLOR_ESTRELLAS = "gold"
 
 # ══════════════════════════════════════════════
-#  PASO 1 — Pedir nombre
+# PASO 1 — Pedir nombre
 # ══════════════════════════════════════════════
 def get_name():
     root = tk.Tk()
@@ -53,9 +49,8 @@ def get_name():
     root.destroy()
     return nombre.strip() if nombre else "Linda"
 
-
 # ══════════════════════════════════════════════
-#  PASO 2 — Fuegos artificiales (pygame)
+# PASO 2 — Fuegos artificiales (pygame)
 # ══════════════════════════════════════════════
 def run_fireworks(nombre):
     pygame.init()
@@ -64,14 +59,13 @@ def run_fireworks(nombre):
     pygame.display.set_caption("🌻 Feliz Cumpleaños 🌻")
     clock = pygame.time.Clock()
 
-    mensaje     = f"Feliz Cumpleaños {nombre.upper()}"
-    fuente      = pygame.font.SysFont("Arial", 42, bold=True)
+    mensaje = f"Feliz Cumpleaños {nombre.upper()}"
+    fuente = pygame.font.SysFont("Arial", 42, bold=True)
     fuente_hint = pygame.font.SysFont("Arial", 14)
-
-    renders     = [fuente.render(c, True, (255, 255, 255)) for c in mensaje]
+    renders = [fuente.render(c, True, (255, 255, 255)) for c in mensaje]
     ancho_total = sum(r.get_width() for r in renders)
-    x_inicio    = (W - ancho_total) // 2
-    y_centro    = H // 2
+    x_inicio = (W - ancho_total) // 2
+    y_centro = H // 2
 
     targets, x = [], x_inicio
     for r in renders:
@@ -90,7 +84,7 @@ def run_fireworks(nombre):
 
         def explotar(self):
             self.x += self.vx; self.y += self.vy
-            self.vx *= 0.92;   self.vy *= 0.92
+            self.vx *= 0.92; self.vy *= 0.92
 
         def agrupar(self, p):
             e = 0.05 + p * 0.05
@@ -100,7 +94,7 @@ def run_fireworks(nombre):
         def dibujar(self, surf):
             r = fuente.render(self.char, True, self.color)
             surf.blit(r, (int(self.x) - r.get_width()//2,
-                         int(self.y) - r.get_height()//2))
+                          int(self.y) - r.get_height()//2))
 
     letras = [
         Letra(c, COLORES_LETRAS[i % len(COLORES_LETRAS)], tx, ty)
@@ -123,7 +117,7 @@ def run_fireworks(nombre):
     def actualizar_chispas(decay=0.018):
         for s in chispas:
             s['x'] += s['vx']; s['y'] += s['vy']
-            s['vx'] *= 0.91;   s['vy'] *= 0.91
+            s['vx'] *= 0.91; s['vy'] *= 0.91
             s['vida'] -= decay
         chispas[:] = [s for s in chispas if s['vida'] > 0]
 
@@ -131,8 +125,8 @@ def run_fireworks(nombre):
         for s in chispas:
             r, g, b = s['color']; f = s['vida']
             pygame.draw.circle(screen,
-                (int(r*f), int(g*f), int(b*f)),
-                (int(s['x']), int(s['y'])), s['radio'])
+                               (int(r*f), int(g*f), int(b*f)),
+                               (int(s['x']), int(s['y'])), s['radio'])
 
     rastro = []
     T_COHETE, T_EXPLOSION, T_AGRUPAR, T_FINAL = 1600, 700, 2600, 3000
@@ -153,7 +147,7 @@ def run_fireworks(nombre):
         screen.fill(COLOR_FONDO_FUEGOS)
 
         if estado == 'COHETE':
-            prog     = min(ahora / T_COHETE, 1.0)
+            prog = min(ahora / T_COHETE, 1.0)
             cohete_y = int(H - 60 - (H - 60 - H//2) * prog)
             rastro.append((W//2 + random.randint(-2, 2), cohete_y + random.randint(2, 12)))
             if len(rastro) > 25: rastro.pop(0)
@@ -189,9 +183,8 @@ def run_fireworks(nombre):
 
     pygame.quit()
 
-
 # ══════════════════════════════════════════════
-#  PASO 3 — Texto animado arcoíris (turtle)
+# PASO 3 — Texto animado arcoíris (turtle)
 # ══════════════════════════════════════════════
 def dibujar_estrella(t, x, y, size, color):
     """Estrella de 5 puntas rellena."""
@@ -202,7 +195,6 @@ def dibujar_estrella(t, x, y, size, color):
         t.forward(size); t.right(144)
     t.end_fill()
 
-
 def texto_arcoiris_animado(screen, nombre):
     """
     Escribe 'Feliz Cumpleaños [nombre]' letra a letra
@@ -210,24 +202,22 @@ def texto_arcoiris_animado(screen, nombre):
     """
     mensaje = f"¡Feliz Cumpleaños, {nombre}!"
 
-    # ── Estrellas decorativas ──────────────────────────────────────────────────
+    # ── Estrellas decorativas ─────────────────────────────────────────────
     st = turtle.Turtle(); st.hideturtle(); st.speed(0); st.penup()
     posiciones = [
         (-360, 330, 9), (360, 330, 7), (-300, 315, 5),
-        (300, 318, 6),  (0,   358, 5), (-180, 348, 7),
-        (180, 348, 6),  (-90,  328, 4), (90,  328, 4),
+        (300, 318, 6), (0, 358, 5), (-180, 348, 7),
+        (180, 348, 6), (-90, 328, 4), (90, 328, 4),
     ]
     for ex, ey, sz in posiciones:
         dibujar_estrella(st, ex, ey, sz, COLOR_ESTRELLAS)
     screen.update()
 
-    # ── Letras una a una ───────────────────────────────────────────────────────
+    # ── Letras una a una ──────────────────────────────────────────────────
     t = turtle.Turtle(); t.hideturtle(); t.speed(0); t.penup()
-
-    # Calcular punto de inicio centrado (aprox 17px por carácter)
     ancho_total = len(mensaje) * 17
-    x_actual    = -(ancho_total // 2)
-    y_texto     = 305
+    x_actual = -(ancho_total // 2)
+    y_texto = 305
 
     t.goto(x_actual, y_texto)
     for i, letra in enumerate(mensaje):
@@ -238,7 +228,7 @@ def texto_arcoiris_animado(screen, nombre):
         t.goto(x_actual, y_texto)
         screen.update()
 
-    # ── Línea arcoíris debajo del título ──────────────────────────────────────
+    # ── Línea arcoíris debajo del título ──────────────────────────────────
     linea = turtle.Turtle(); linea.hideturtle(); linea.speed(0); linea.penup()
     linea.pensize(3)
     segmento = (ancho_total + 20) // len(COLORES_TEXTO_ARCOIRIS)
@@ -248,17 +238,16 @@ def texto_arcoiris_animado(screen, nombre):
         linea.color(color); linea.forward(segmento + 4)
     screen.update()
 
-    # ── Subtítulo ──────────────────────────────────────────────────────────────
+    # ── Subtítulo ─────────────────────────────────────────────────────────
     sub = turtle.Turtle(); sub.hideturtle(); sub.penup()
     sub.color(COLOR_SUBTITULO)
     sub.goto(0, 270)
-    sub.write("✨   by Antonio   ✨",
+    sub.write("✨ by Antonio ✨",
               align="center", font=("Arial", 7, "italic"))
     screen.update()
 
-
 # ══════════════════════════════════════════════
-#  PASO 4 — Girasol (turtle)
+# PASO 4 — Girasol (turtle)
 # ══════════════════════════════════════════════
 def draw_sunflower(json_file, nombre):
     screen = turtle.Screen()
@@ -277,38 +266,35 @@ def draw_sunflower(json_file, nombre):
     all_points = [(p[0], p[1]) for r in regions for p in r['contour']]
     min_x = min(p[0] for p in all_points); max_x = max(p[0] for p in all_points)
     min_y = min(p[1] for p in all_points); max_y = max(p[1] for p in all_points)
-
-    width    = max_x - min_x; height   = max_y - min_y
-    scale    = min(540 / width, 540 / height)
+    width = max_x - min_x; height = max_y - min_y
+    scale = min(540 / width, 540 / height)
     center_x = (min_x + max_x) / 2; center_y = (min_y + max_y) / 2
-    offset_y = -50   
-# baja el girasol para no tapar el texto
-for region in regions:
-    r_val = int(region['color'][0])
-    g_val = int(region['color'][1])
-    b_val = int(region['color'][2])
-# si el color es negro o oscuro
-if r_val < 15 and g_val < 15 and b_val < 15:
-    color = COLOR_FONDO_GIRASOL
-else:
-    color = '#{:02x}{:02x}{:02}'.format(r_val, g_val, b_val)
-    t.color(color, color)
-    
-  points = region['contour']
-  t.begin_fill(); t.penup()
-  t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
-  t.pendown()
-  for point in points[1]:
-      t.goto((point[0]-center_x)*scale, (center_y-point[1])*scale+offset_y)
-      t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
-      t.end-fill()
-      screen.updates()
+    offset_y = -50
 
-screen.mainloop()
+    for region in regions:
+        r_val = int(region['color'][0])
+        g_val = int(region['color'][1])
+        b_val = int(region['color'][2])
+        if r_val < 15 and g_val < 15 and b_val < 15:
+            color = COLOR_FONDO_GIRASOL
+        else:
+            color = '#{:02x}{:02x}{:02x}'.format(r_val, g_val, b_val)  # FIX 2: {:02} → {:02x}
 
+        t.color(color, color)
+        points = region['contour']              # FIX 6: IndentationError — alineado dentro del for
+        t.begin_fill(); t.penup()
+        t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
+        t.pendown()
+        for point in points[1:]:               # FIX 3: points[1] → points[1:]
+            t.goto((point[0]-center_x)*scale, (center_y-point[1])*scale+offset_y)
+        t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
+        t.end_fill()                           # FIX 4: end-fill() → end_fill()
+        screen.update()                        # FIX 5: screen.updates() → screen.update()
+
+    screen.mainloop()
 
 # ══════════════════════════════════════════════
-#  PROGRAMA PRINCIPAL
+# PROGRAMA PRINCIPAL
 # ══════════════════════════════════════════════
 if __name__ == "__main__":
     nombre = get_name()
