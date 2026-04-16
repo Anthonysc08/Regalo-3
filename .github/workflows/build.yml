@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Descargando codigo
+        uses: actions/checkout@v4
 
       - name: Instalar Python
         uses: actions/setup-python@v5
@@ -18,9 +18,12 @@ jobs:
           python-version: "3.11"
 
       - name: Instalar dependencias
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Compilar .exe
+      - name: Compilar .exe (Windows)
+        # Usamos ";" para separar rutas en Windows
         run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json;resources" "05 copy 2.py"
 
       - name: Subir .exe
@@ -32,7 +35,8 @@ jobs:
   build-mac:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Descargando codigo
+        uses: actions/checkout@v4
 
       - name: Instalar Python
         uses: actions/setup-python@v5
@@ -40,14 +44,17 @@ jobs:
           python-version: "3.11"
 
       - name: Instalar dependencias
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Compilar para Mac
+      - name: Compilar .app (macOS)
+        # Usamos ":" para separar rutas en macOS
         run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "05 copy 2.py"
 
-      - - name: Subir ejecutable Mac
+      - name: Subir ejecutable Mac
         uses: actions/upload-artifact@v4
         with:
           name: FelizCumpleanos-Mac
-          # Usamos la carpeta dist completa para asegurar que incluya el .app
+          # En Mac, el resultado principal es la carpeta .app
           path: dist/FelizCumpleanos.app
