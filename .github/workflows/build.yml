@@ -57,4 +57,4 @@ jobs:
         with:
           name: FelizCumpleanos-Mac
           # En Mac, el resultado principal es la carpeta .app
-          path: dist/FelizCumpleanos.app
+          path: dist/FelizCumpleanos
