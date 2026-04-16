@@ -284,9 +284,9 @@ def draw_sunflower(json_file, nombre):
     offset_y = -50   # baja el girasol para no tapar el texto
 
     for region in regions:
-        r_val = int(region['color'][0])
-        g_val = int(region['color'][1])
-        b_val = int(region['color'][2])
+       r_val = min(255, max(0, int(region['color'][0])))
+       g_val = min(255, max(0, int(region['color'][1])))
+       b_val = min(255, max(0, int(region['color'][2])))
         # Si el color es negro o muy oscuro, usar el color de fondo
         if r_val < 15 and g_val < 15 and b_val < 15:
             color = COLOR_FONDO_GIRASOL
