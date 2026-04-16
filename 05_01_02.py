@@ -294,15 +294,16 @@ else:
     color = '#{:02x}{:02x}{:02}'.format(r_val, g_val, b_val)
     t.color(color, color)
     
-points = region['contour']
-t.begin_fill(); t.penup()
-t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
-t.pendown()
-for point in points[1]:
-    t.goto((point[0]-center_x)*scale, (center_y-point[1])*scale+offset_y)
-           t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
-           t.end-fill()
-           screen.updates()
+  points = region['contour']
+  t.begin_fill(); t.penup()
+  t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
+  t.pendown()
+  for point in points[1]:
+      
+      t.goto((point[0]-center_x)*scale, (center_y-point[1])*scale+offset_y)
+      t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
+      t.end-fill()
+      screen.updates()
 
 screen.mainloop()
 
