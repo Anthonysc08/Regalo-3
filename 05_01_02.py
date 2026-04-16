@@ -6,7 +6,12 @@ import random
 import sys
 import turtle
 import json
+import os, sys
 
+def resource_path(rel):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, rel)
+        return os.path.join(os.path.dirname(_file_), rel)
 # ── Fuegos artificiales ───────────────────────────────────────
 COLOR_FONDO_FUEGOS = (8, 8, 18)          # ← fondo de los fuegos artificiales
 
@@ -266,7 +271,7 @@ def draw_sunflower(json_file, nombre):
 
     t = turtle.Turtle(); t.hideturtle(); t.speed(0)
 
-    with open(json_file) as f:
+    with open(resource_path(json_file)) as f:
         regions = json.load(f)
 
     all_points = [(p[0], p[1]) for r in regions for p in r['contour']]
