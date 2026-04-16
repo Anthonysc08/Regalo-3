@@ -283,16 +283,17 @@ def draw_sunflower(json_file, nombre):
     center_x = (min_x + max_x) / 2; center_y = (min_y + max_y) / 2
     offset_y = -50   # baja el girasol para no tapar el texto
 
-    for region in regions:
-       r_val = min(255, max(0, int(region['color'][0])))
-       g_val = min(255, max(0, int(region['color'][1])))
-       b_val = min(255, max(0, int(region['color'][2])))
-        # Si el color es negro o muy oscuro, usar el color de fondo
-        if r_val < 15 and g_val < 15 and b_val < 15:
-            color = COLOR_FONDO_GIRASOL
-        else:
-            color = '#{:02x}{:02x}{:02x}'.format(r_val, g_val, b_val)
-        t.color(color, color)
+  for region in regions:
+      r_val = int(region['color'][0])
+      g_val = int(region['color'][1])
+      b_val = int(region['color'][2])
+      #Si el color es negro o muy oscuro, usar el color de fondo
+      if r_val < 15 and g_val < 15 and b_val < 15:
+          color = COLOR_FONDO_GIRASOL
+      else:
+          color = '#{:02x}{:02x}{:02x}'.format(r_val, g_val, b_val)
+          t.color(color, color)
+          
         points = region['contour']
         t.begin_fill(); t.penup()
         t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
