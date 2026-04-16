@@ -45,8 +45,9 @@ jobs:
       - name: Compilar para Mac
         run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "05 copy 2.py"
 
-      - name: Subir ejecutable Mac
+      - - name: Subir ejecutable Mac
         uses: actions/upload-artifact@v4
         with:
           name: FelizCumpleanos-Mac
-          path: dist/FelizCumpleanos
+          # Usamos la carpeta dist completa para asegurar que incluya el .app
+          path: dist/FelizCumpleanos.app
