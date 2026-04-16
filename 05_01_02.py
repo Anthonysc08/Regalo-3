@@ -297,7 +297,7 @@ else:
 points = region['contour']
 t.begin_fill(); t.penup()
 t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
-       t.pendown()
+t.pendown()
        for point in points[1:]:
        t.goto((point[0]-center_x)*scale, (center_y-point[1])*scale+offset_y)
 t.goto((points[0][0]-center_x)*scale, (center_y-points[0][1])*scale+offset_y)
