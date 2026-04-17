@@ -8,10 +8,16 @@ import turtle
 import json
 import os, sys
 
+import os, sys
+
 def resource_path(rel):
-    if hasattr(sys, "_MEIPASS"):
+    """Devuelve la ruta correcta del recurso en dev (.py) o en prod (.exe)."""
+    if hasattr(sys, '_MEIPASS'):
+        # Modo ejecutable: los recursos están extraídos en la carpeta temporal
         return os.path.join(sys._MEIPASS, rel)
-        return os.path.join(os.path.dirname(_file_), rel)
+    # Modo script: subir un nivel desde src/ para llegar a resources/
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base, rel)
 # ── Fuegos artificiales ───────────────────────────────────────
 COLOR_FONDO_FUEGOS = (8, 8, 18)          # ← fondo de los fuegos artificiales
 
