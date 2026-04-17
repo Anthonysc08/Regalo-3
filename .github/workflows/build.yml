@@ -23,8 +23,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Compilar .exe (Windows)
-        # Usamos ";" para separar rutas en Windows
-        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json;resources" "05 copy 2.py"
+        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json;resources" "src/regalo.py"
 
       - name: Subir .exe
         uses: actions/upload-artifact@v4
@@ -49,12 +48,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Compilar .app (macOS)
-        # Usamos ":" para separar rutas en macOS
-        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "05 copy 2.py"
+        run: pyinstaller --onefile --windowed --name "FelizCumpleanos" --add-data "resources/sunflowers.json:resources" "src/regalo.py"
 
       - name: Subir ejecutable Mac
         uses: actions/upload-artifact@v4
         with:
           name: FelizCumpleanos-Mac
-          # En Mac, el resultado principal es la carpeta .app
           path: dist/FelizCumpleanos.app
